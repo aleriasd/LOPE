@@ -58,20 +58,26 @@
             const size = 128;
             canvas.width = size;
             canvas.height = size;
-            context.fillStyle = 'rgba(0, 0, 0, 0)';
+            
+            context.fillStyle = 'rgba(0, 0, 0, 0)'; // Latar transparan
             context.fillRect(0, 0, size, size);
+            
             context.fillStyle = '#FF69B4'; // Warna pink
-            context.font = 'bold 24px Arial';
+            
+            // --- <<< PERUBAHAN DI SINI >>> ---
+            context.font = 'bold 22px Arial'; // Font size dikecilin dikit
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            context.fillText("Kale", size / 2, size / 2 - 15);
-            context.fillText("<3", size / 2, size / 2 + 10);
-            context.fillText("Kina", size / 2, size / 2 + 35);
+            
+            // Tulis "Kale <3 Kina" di SATU BARIS
+            context.fillText("Kale <3 Kina", size / 2, size / 2); 
+            // --- <<< --------------------- >>> ---
+            
             return new THREE.CanvasTexture(canvas);
         }
 
         function createHeart() {
-            const particleCount = 10000;
+            const particleCount = 5000; // Jumlah partikel (tetap 5000)
             const points = [];
             const scaleFactor = 0.8; 
 
@@ -79,22 +85,16 @@
                 const t = Math.random() * 2 * Math.PI; 
                 // Rumus Hati
                 const x = scaleFactor * 16 * Math.pow(Math.sin(t), 3);
-                
-                // --- <<< INI DIA PERBAIKANNYA >>> ---
-                // Kita HAPUS tanda minus (-) di depan rumus Y
-                // Biar hatinya NGGAK KEBALIK (runcing di bawah)
                 const y = scaleFactor * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-                // --- <<< ------------------------- >>> ---
-
                 const z = (Math.random() - 0.5) * 5; 
                 points.push(new THREE.Vector3(x, y, z));
             }
             
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
-            const texture = createTextTexture();
+            const texture = createTextTexture(); // Pakai tekstur baru (1 baris)
             const material = new THREE.PointsMaterial({
                 map: texture,
-                size: 2.0,
+                size: 2.0, // Ukuran partikel
                 transparent: true,
                 alphaTest: 0.1,
                 blending: THREE.AdditiveBlending // Efek 'glow'
